@@ -1,0 +1,5 @@
+SELECT P.product_name,S.year,s.price
+FROM Sales S
+JOIN
+    Product P
+on s.product_id=p.product_id
