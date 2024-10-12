@@ -1,0 +1,10 @@
+select name
+from Employee
+where id in 
+
+(select managerId
+from
+(select managerId 
+from Employee ) as E
+group by managerId 
+having count(*)>=5 );
