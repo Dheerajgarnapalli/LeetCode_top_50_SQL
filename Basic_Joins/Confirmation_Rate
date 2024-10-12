@@ -1,0 +1,36 @@
+#long approach
+select k.user_id , k.total as confirmation_rate
+from
+( 
+select t.user_id ,t.confirmation,t.timeout, t.confirmation + t.timeout as total
+from (
+select
+ s.user_id,
+ count(case when c.action='confirmed' then 1 end ) as confirmation,
+ count(case when c.action='timeout' then 1 end )as timeout 
+from 
+Signups s left join Confirmations c
+on s.user_id=c.user_id
+group by s.user_id ) as t) as k
+where total=0
+union all
+select f.user_id , round(f.confirmation/f.total,2) as confirmation_rate
+from(
+select k.user_id ,k.confirmation, k.total 
+from
+( 
+select t.user_id ,t.confirmation,t.timeout, t.confirmation + t.timeout as total
+from (
+      select
+      s.user_id,
+      count(case when c.action='confirmed' then 1 end ) as confirmation,
+      count(case when c.action='timeout' then 1 end )as timeout 
+        from 
+        Signups s left join Confirmations c
+           on s.user_id=c.user_id
+           group by s.user_id 
+        ) as t
+    ) as k
+where k.total!=0  
+    )
+ as f;
