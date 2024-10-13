@@ -1,0 +1,8 @@
+
+select k.customer_id
+from(
+select customer_id , count(distinct product_key) as counti
+from Customer
+group by customer_id) k
+where k.counti = (select count(*)
+                from Product)
