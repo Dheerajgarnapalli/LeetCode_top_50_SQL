@@ -1,0 +1,11 @@
+select k.employee_id ,k.name , count(k.employee_id) as reports_count,round(avg(age)) as average_age
+from(
+select e2.employee_id , e2.name, e1.age
+from 
+Employees e1
+left join 
+Employees e2
+on e1.reports_to = e2.employee_id) k
+group by k.employee_id
+having k.employee_id is not null
+order by k.employee_id
