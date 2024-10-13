@@ -1,0 +1,9 @@
+select t.employee_id
+from (
+select *
+from Employees
+where salary<30000 and manager_id is not null) t
+where t.manager_id not in
+   (select employee_id
+from Employees )
+order by t.employee_id
